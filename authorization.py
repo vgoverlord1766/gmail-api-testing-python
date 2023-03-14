@@ -2,7 +2,7 @@ from __future__ import print_function
 import json
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
+
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/calendar.events.readonly',
           'https://www.googleapis.com/auth/tasks']
@@ -32,17 +32,3 @@ def get_user_credentials(user_lasid):
             token_file.write(json.dumps(users))
 
 
-print("Enter your LASID:")
-user_input = input()
-
-print(get_user_credentials(user_input))
-creds = get_user_credentials(user_input)
-service = build('gmail', 'v1', credentials=creds)
-results = service.users().labels().list(userId='me').execute()
-labels = results.get('labels', [])
-
-if not labels:
-    print('No labels found.')
-print('Labels:')
-for label in labels:
-    print(label['name'])
